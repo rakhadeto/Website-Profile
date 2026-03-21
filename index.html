@@ -7,487 +7,347 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#080810;--bg2:#0e0e1a;--surface:#12121f;--surface2:#1a1a2e;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text-1:#eeeaf4;--text-2:#8480a0;--text-3:#443f60;--accent:#a78bfa;--accent-2:#f0abfc;--accent-3:#34d399;--accent-wa:#25d366;--accent-em:#ea4335;--accent-gh:#e8eaed;--accent-ig:#e1306c;--fd:'Playfair Display',serif;--fs:'Syne',sans-serif;--fm:'JetBrains Mono',monospace;--r-sm:10px;--r-md:16px;--r-lg:24px;--nav-h:64px;--bnav-h:68px;--max-w:960px;--ease:cubic-bezier(.25,.46,.45,.94)}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text-1);font-family:var(--fm);font-size:14px;line-height:1.65;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;padding-bottom:var(--bnav-h)}
-a{text-decoration:none;color:inherit}
-button{border:none;background:none;cursor:pointer;color:inherit;font:inherit}
-.noise{position:fixed;inset:0;z-index:200;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px}
-.ambient{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.blob{position:absolute;border-radius:50%;filter:blur(90px)}
-.blob-1{width:500px;height:500px;background:var(--accent);opacity:.10;top:-150px;right:-100px;animation:bd1 14s ease-in-out infinite alternate}
-.blob-2{width:350px;height:350px;background:var(--accent-2);opacity:.08;bottom:5%;left:-80px;animation:bd2 18s ease-in-out infinite alternate}
-.blob-3{width:250px;height:250px;background:var(--accent-3);opacity:.06;bottom:30%;right:10%;animation:bd1 22s ease-in-out infinite alternate-reverse}
-@keyframes bd1{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,30px) scale(1.1)}}
-@keyframes bd2{from{transform:translate(0,0) scale(1)}to{transform:translate(-30px,40px) scale(1.08)}}
-.grid-lines{position:fixed;inset:0;pointer-events:none;z-index:0}
-.vline{position:absolute;top:0;bottom:0;width:1px;background:var(--border);opacity:.5}
-.vl-1{left:calc(50% - 480px)}.vl-2{right:calc(50% - 480px)}
-.navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:rgba(8,8,16,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-inner{max-width:var(--max-w);margin:0 auto;height:100%;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{font-family:var(--fm);font-size:15px;font-weight:500;letter-spacing:.05em}
-.logo-bracket{color:var(--accent)}
-.nav-tabs{display:flex;gap:4px}
-.tab-btn{font-family:var(--fs);font-size:13px;font-weight:500;letter-spacing:.05em;padding:7px 16px;border-radius:40px;color:var(--text-2);transition:all .3s var(--ease);border:1px solid transparent}
-.tab-btn:hover{color:var(--text-1)}
-.tab-btn.active{background:var(--surface2);color:var(--text-1);border-color:var(--border2)}
-.nav-indicator{display:flex;align-items:center;gap:7px}
-.ind-dot{width:7px;height:7px;border-radius:50%;background:var(--accent-3);box-shadow:0 0 8px var(--accent-3);animation:pdot 2.2s ease-in-out infinite}
-@keyframes pdot{0%,100%{box-shadow:0 0 6px var(--accent-3)}50%{box-shadow:0 0 16px var(--accent-3)}}
-.ind-text{font-family:var(--fm);font-size:11px;color:var(--text-3);letter-spacing:.08em;transition:opacity .4s}
-.section{position:relative;z-index:1;padding-top:var(--nav-h)}
-#home{min-height:100vh;max-width:var(--max-w);margin:0 auto;padding:64px 24px 80px;display:flex;flex-direction:column;justify-content:center}
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .65s var(--ease),transform .65s var(--ease)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.about-grid .reveal:nth-child(1){transition-delay:.05s}
-.about-grid .reveal:nth-child(2){transition-delay:.12s}
-.about-grid .reveal:nth-child(3){transition-delay:.19s}
-.about-grid .reveal:nth-child(4){transition-delay:.26s}
-.about-grid .reveal:nth-child(5){transition-delay:.33s}
-.about-grid .reveal:nth-child(6){transition-delay:.40s}
-.links-grid .reveal:nth-child(1){transition-delay:.05s}
-.links-grid .reveal:nth-child(2){transition-delay:.13s}
-.links-grid .reveal:nth-child(3){transition-delay:.21s}
-.links-grid .reveal:nth-child(4){transition-delay:.29s}
-.section-divider{display:flex;align-items:center;gap:16px;max-width:var(--max-w);margin:0 auto;padding:0 24px;position:relative;z-index:1}
-.sd-line{flex:1;height:1px;background:var(--border)}
-.sd-label{font-family:var(--fm);font-size:11px;color:var(--accent);letter-spacing:.14em;white-space:nowrap}
-.home-layout{display:grid;grid-template-columns:1fr 380px;gap:60px;align-items:center}
-.home-left{display:flex;flex-direction:column;gap:28px}
-.home-eyebrow{display:flex;align-items:center;gap:12px}
-.eyebrow-line{height:1px;width:40px;background:var(--accent);display:block}
-.eyebrow-text{font-family:var(--fm);font-size:11px;color:var(--accent);letter-spacing:.14em;text-transform:uppercase}
-.home-headline{display:flex;flex-direction:column;gap:4px}
-.hl-top{font-family:var(--fs);font-size:18px;font-weight:500;color:var(--text-2);letter-spacing:.04em}
-.hl-name{font-family:var(--fd);font-size:clamp(52px,7vw,80px);font-weight:700;line-height:.92;letter-spacing:-.02em;color:var(--text-1)}
-.hl-name em{font-style:italic;color:var(--accent)}
-.home-sub{font-family:var(--fm);font-size:13px;color:var(--text-2);letter-spacing:.04em;margin-top:-8px}
-.home-greeting{font-family:var(--fd);font-size:17px;font-style:italic;color:var(--text-2);line-height:1.6;border-left:2px solid var(--accent);padding-left:16px}
-.home-cta{display:flex;gap:12px;flex-wrap:wrap}
-.cta-primary{display:inline-flex;align-items:center;gap:10px;font-family:var(--fs);font-size:14px;font-weight:600;letter-spacing:.04em;padding:13px 24px;background:var(--accent);color:#080810;border-radius:40px;transition:all .3s var(--ease);border:1px solid var(--accent);cursor:pointer}
-.cta-primary:hover{background:var(--accent-2);border-color:var(--accent-2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(167,139,250,.3)}
-.cta-primary svg{transition:transform .3s}
-.cta-primary:hover svg{transform:translateX(4px)}
-.cta-secondary{display:inline-flex;align-items:center;font-family:var(--fs);font-size:14px;font-weight:600;letter-spacing:.04em;padding:13px 24px;border-radius:40px;border:1px solid var(--border2);color:var(--text-1);background:var(--surface);transition:all .3s var(--ease);cursor:pointer}
-.cta-secondary:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
-.home-chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{font-family:var(--fm);font-size:11px;padding:5px 12px;border-radius:20px;background:var(--surface);border:1px solid var(--border);color:var(--text-2)}
-.scroll-hint{display:flex;align-items:center;gap:10px;margin-top:56px}
-.sh-text{font-family:var(--fm);font-size:10px;color:var(--text-3);letter-spacing:.1em}
-.sh-arrow{color:var(--text-3);animation:bounceDown 1.8s ease-in-out infinite}
-@keyframes bounceDown{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
-.home-right{position:relative}
-.hero-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-lg);padding:28px;position:relative;overflow:hidden}
-.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
-.hc-avatar{display:flex;align-items:center;gap:16px;padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:24px;position:relative}
-.hc-ring{position:absolute;width:88px;height:88px;border-radius:50%;border:1.5px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(135deg,var(--accent),transparent,var(--accent-2)) border-box;animation:rotateSlow 8s linear infinite;top:-4px;left:-4px}
-@keyframes rotateSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.hc-img{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--surface2),var(--bg2));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:22px;font-weight:700;color:var(--accent);border:2px solid var(--border2);flex-shrink:0;overflow:hidden;box-shadow:0 0 20px rgba(167,139,250,0.2)}
-.hc-img img{width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:50%}
-.hc-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;color:var(--accent-3);background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);padding:5px 10px;border-radius:20px;letter-spacing:.05em}
-.hc-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent-3);animation:pdot 2s infinite}
-.hc-stats{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-.stat-item{flex:1;text-align:center}
-.stat-num{display:block;font-family:var(--fd);font-size:28px;font-weight:700;color:var(--accent)}
-.stat-label{display:block;font-family:var(--fm);font-size:10px;color:var(--text-3);letter-spacing:.06em;margin-top:2px;line-height:1.4}
-.stat-divider{width:1px;height:40px;background:var(--border)}
-.hc-skills-preview{display:flex;flex-wrap:wrap;gap:6px}
-.sp-tag{font-family:var(--fm);font-size:10px;padding:4px 10px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);color:var(--text-2)}
-.sp-tag.active-tag{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.3);color:var(--accent)}
-.float-quote{position:absolute;bottom:-20px;right:-10px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:14px 16px 14px 12px;max-width:180px;backdrop-filter:blur(10px);transform:rotate(2deg);animation:floatQ 4s ease-in-out infinite alternate}
-@keyframes floatQ{from{transform:rotate(2deg) translateY(0)}to{transform:rotate(2deg) translateY(-8px)}}
-.fq-mark{font-family:var(--fd);font-size:36px;color:var(--accent);opacity:.5;line-height:0;display:block;margin-bottom:6px}
-.float-quote p{font-family:var(--fd);font-style:italic;font-size:13px;color:var(--text-2);line-height:1.5}
-.page-inner{max-width:var(--max-w);margin:0 auto;padding:72px 24px 100px}
-.contact-inner{max-width:560px}
-.section-header{margin-bottom:48px}
-.sh-eyebrow{font-family:var(--fm);font-size:12px;color:var(--accent);letter-spacing:.12em;margin-bottom:10px}
-.sh-title{font-family:var(--fd);font-size:clamp(36px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-.02em}
-.sh-title em{font-style:italic;color:var(--accent)}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.about-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;transition:border-color .3s,transform .3s,box-shadow .3s}
-.about-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3)}
-.ac-label{font-family:var(--fm);font-size:10px;font-weight:500;color:var(--accent);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;display:inline-flex;align-items:center;gap:8px}
-.ac-label::before{content:'';width:16px;height:1px;background:var(--accent);display:block}
-.bio-card{grid-column:1/-1}
-.bio-long{font-family:var(--fd);font-size:16px;line-height:1.7;color:var(--text-2)}
-.bio-long strong{color:var(--text-1);font-weight:400}
-.bio-long em{color:var(--accent);font-style:italic}
-.edu-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
-.edu-item:last-child{margin-bottom:0}
-.edu-icon{font-size:20px;flex-shrink:0;margin-top:1px}
-.edu-name{display:block;font-family:var(--fs);font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:2px}
-.edu-prog{display:block;font-family:var(--fm);font-size:11px;color:var(--text-3)}
-.skills-groups{display:flex;flex-direction:column;gap:20px}
-.sg-label{display:block;font-family:var(--fm);font-size:10px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
-.skill-bars{display:flex;flex-direction:column;gap:10px}
-.skill-bar-item{display:flex;align-items:center;gap:10px}
-.sbi-name{font-family:var(--fm);font-size:11px;color:var(--text-2);width:110px;flex-shrink:0}
-.sbi-track{flex:1;height:3px;background:var(--surface2);border-radius:2px;overflow:hidden}
-.sbi-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:2px;transition:width 1.4s cubic-bezier(.22,1,.36,1)}
-.sbi-pct{font-family:var(--fm);font-size:10px;color:var(--text-3);width:30px;text-align:right}
-.soft-tags{display:flex;flex-wrap:wrap;gap:6px}
-.soft-tag{font-family:var(--fm);font-size:11px;padding:5px 11px;border-radius:20px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:var(--accent)}
-.exp-card{grid-column:1/-1}
-.timeline{display:flex;flex-direction:column;position:relative;padding-left:24px}
-.timeline::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,var(--accent),var(--surface2))}
-.tl-item{position:relative;padding-bottom:28px}
-.tl-item:last-child{padding-bottom:0}
-.tl-dot{position:absolute;left:-24px;top:6px;width:13px;height:13px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);box-shadow:0 0 8px rgba(167,139,250,.4)}
-.tl-date{display:block;font-family:var(--fm);font-size:10px;color:var(--accent);letter-spacing:.08em;margin-bottom:4px}
-.tl-role{display:block;font-family:var(--fs);font-size:15px;font-weight:700;color:var(--text-1);margin-bottom:2px}
-.tl-org{display:block;font-family:var(--fm);font-size:11px;color:var(--text-3);margin-bottom:8px}
-.tl-desc{font-family:var(--fd);font-size:14px;color:var(--text-2);line-height:1.65}
-.projects-list{display:flex;flex-direction:column}
-.proj-item{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
-.proj-item:first-child{padding-top:0}
-.proj-item:last-child{border-bottom:none;padding-bottom:0}
-.proj-icon{font-size:22px;flex-shrink:0;margin-top:2px}
-.proj-info{flex:1}
-.proj-name{display:block;font-family:var(--fs);font-size:14px;font-weight:700;color:var(--text-1);margin-bottom:2px}
-.proj-tech{display:block;font-family:var(--fm);font-size:10px;color:var(--accent);letter-spacing:.08em;margin-bottom:6px}
-.proj-desc{font-family:var(--fd);font-size:13px;color:var(--text-2);line-height:1.6}
-.proj-link{width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text-2);transition:all .25s}
-.proj-link:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
-.fun-list{display:flex;flex-direction:column;gap:12px}
-.fun-item{display:flex;align-items:center;gap:12px}
-.fun-emoji{font-size:18px;flex-shrink:0}
-.fun-item span:last-child{font-family:var(--fm);font-size:12px;color:var(--text-2)}
-.contact-intro{font-family:var(--fd);font-style:italic;font-size:17px;color:var(--text-2);line-height:1.6;margin-bottom:36px;border-left:2px solid var(--accent);padding-left:16px}
-.links-grid{display:flex;flex-direction:column;gap:10px}
-.link-card{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);transition:all .3s var(--ease);position:relative;overflow:hidden;cursor:pointer}
-.link-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s}
-.link-card[data-platform="whatsapp"]::before{background:linear-gradient(135deg,rgba(37,211,102,.07),transparent)}
-.link-card[data-platform="email"]::before{background:linear-gradient(135deg,rgba(234,67,53,.07),transparent)}
-.link-card[data-platform="github"]::before{background:linear-gradient(135deg,rgba(232,234,237,.05),transparent)}
-.link-card[data-platform="instagram"]::before{background:linear-gradient(135deg,rgba(225,48,108,.07),transparent)}
-.link-card:hover{border-color:var(--border2);transform:translateX(5px)}
-.link-card:hover::before{opacity:1}
-.link-card:hover .link-arrow{opacity:1;transform:translateX(0)}
-.link-icon{width:42px;height:42px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);flex-shrink:0;transition:all .3s}
-.link-icon svg{width:18px;height:18px}
-.link-card[data-platform="whatsapp"] .link-icon svg{color:var(--accent-wa)}
-.link-card[data-platform="email"] .link-icon svg{color:var(--accent-em)}
-.link-card[data-platform="github"] .link-icon svg{color:var(--accent-gh)}
-.link-card[data-platform="instagram"] .link-icon svg{color:var(--accent-ig)}
-.link-card[data-platform="whatsapp"]:hover .link-icon{background:rgba(37,211,102,.1)}
-.link-card[data-platform="email"]:hover .link-icon{background:rgba(234,67,53,.1)}
-.link-card[data-platform="github"]:hover .link-icon{background:rgba(232,234,237,.06)}
-.link-card[data-platform="instagram"]:hover .link-icon{background:rgba(225,48,108,.1)}
-.link-info{flex:1;min-width:0}
-.link-name{display:block;font-family:var(--fs);font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:2px}
-.link-handle{display:block;font-family:var(--fm);font-size:11px;color:var(--text-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .3s}
-.link-card:hover .link-handle{color:var(--text-2)}
-.link-arrow{opacity:0;transform:translateX(-6px);transition:all .3s;color:var(--text-3);flex-shrink:0}
-.contact-footer-note{display:flex;align-items:center;gap:16px;margin-top:36px}
-.cfn-line{flex:1;height:1px;background:var(--border)}
-.cfn-text{font-family:var(--fm);font-size:11px;color:var(--text-3);white-space:nowrap}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--bnav-h);background:rgba(8,8,16,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:none;align-items:center;justify-content:space-around;padding:0 16px;z-index:100}
-.bn-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 20px;color:var(--text-3);transition:color .25s;flex:1;border-radius:var(--r-sm)}
-.bn-btn span{font-family:var(--fm);font-size:9px;letter-spacing:.06em}
-.bn-btn.active{color:var(--accent)}
-.site-footer{text-align:center;padding:32px 24px;border-top:1px solid var(--border);position:relative;z-index:1}
-.site-footer p{font-family:var(--fm);font-size:11px;color:var(--text-3);letter-spacing:.07em}
-@media(max-width:820px){.home-layout{grid-template-columns:1fr;gap:40px}.float-quote{display:none}.about-grid{grid-template-columns:1fr}.bio-card,.exp-card{grid-column:1}.vl-1,.vl-2{display:none}}
-@media(max-width:640px){:root{--nav-h:56px}.nav-indicator{display:none}.bottom-nav{display:flex}.tab-btn{padding:6px 12px;font-size:12px}#home{padding:40px 20px 60px}.hl-name{font-size:clamp(44px,11vw,64px)}.home-cta{flex-direction:column}.cta-primary,.cta-secondary{width:100%;justify-content:center}.page-inner{padding:48px 20px 80px}.hero-card{padding:20px}.hc-stats{gap:12px}.stat-num{font-size:22px}}
-@media(max-width:400px){.nav-tabs{gap:2px}.tab-btn{padding:5px 10px;font-size:11px}}
-@keyframes ripple{from{width:0;height:0;opacity:.8}to{width:220px;height:220px;opacity:0}}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:4px}
-::selection{background:rgba(167,139,250,.2);color:var(--text-1)}
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="noise"></div>
-<div class="ambient"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
-<div class="grid-lines"><div class="vline vl-1"></div><div class="vline vl-2"></div></div>
 
-<nav class="navbar">
-  <div class="nav-inner">
-    <div class="nav-logo"><span class="logo-bracket">[</span>NR<span class="logo-bracket">]</span></div>
-    <div class="nav-tabs">
-      <button class="tab-btn active" data-target="home">Home</button>
-      <button class="tab-btn" data-target="about">About</button>
-      <button class="tab-btn" data-target="contact">Contact</button>
-    </div>
-    <div class="nav-indicator"><span class="ind-dot"></span><span class="ind-text" id="nav-status">Available</span></div>
+  <div class="noise"></div>
+  <div class="ambient">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
   </div>
-</nav>
+  <div class="grid-lines">
+    <div class="vline vl-1"></div>
+    <div class="vline vl-2"></div>
+  </div>
 
-<!-- HOME -->
-<section class="section" id="home">
-  <div class="home-layout">
-    <div class="home-left">
-      <div class="home-eyebrow reveal"><span class="eyebrow-line"></span><span class="eyebrow-text">Welcome to my space</span></div>
-      <h1 class="home-headline reveal">
-        <span class="hl-top">Hey, I'm</span>
-        <span class="hl-name">Naufal<br><em>Rakhadeto</em></span>
-      </h1>
-      <p class="home-sub reveal">Mahasiswa Sistem Informasi &middot; Builder &middot; Organizer</p>
-      <p class="home-greeting reveal" id="dynamic-greeting"></p>
-      <div class="home-cta reveal">
-        <button class="cta-primary" data-target="about">
-          <span>Explore About Me</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
-        <button class="cta-secondary" data-target="contact"><span>Get In Touch</span></button>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo"><span class="logo-bracket">[</span>NR<span class="logo-bracket">]</span></div>
+      <div class="nav-tabs">
+        <button class="tab-btn active" data-target="home">Home</button>
+        <button class="tab-btn" data-target="about">About</button>
+        <button class="tab-btn" data-target="contact">Contact</button>
       </div>
-      <div class="home-chips reveal">
-        <span class="chip">&#128205; Tangerang Selatan</span>
-        <span class="chip">&#127891; UIN Syarif Hidayatullah</span>
-        <span class="chip">&#128187; Sistem Informasi</span>
+      <div class="nav-indicator">
+        <span class="ind-dot"></span>
+        <span class="ind-text" id="nav-status">Available</span>
       </div>
     </div>
-    <div class="home-right reveal">
-      <div class="hero-card">
-        <div class="hc-avatar">
-          <div class="hc-ring"></div>
-          <div class="hc-img">
-            <img src="foto-naufal.jpeg" alt="Naufal Rakhadeto" onerror="this.parentElement.innerHTML='NR'">
-          </div>
-          <div class="hc-badge"><span class="hc-badge-dot"></span>Open to Work</div>
+  </nav>
+
+  <!-- ===== HOME ===== -->
+  <section class="section" id="home">
+    <div class="home-layout">
+
+      <div class="home-left">
+        <div class="home-eyebrow reveal">
+          <span class="eyebrow-line"></span>
+          <span class="eyebrow-text">Welcome to my space</span>
         </div>
-        <div class="hc-stats">
-          <div class="stat-item"><span class="stat-num">2+</span><span class="stat-label">Years Org<br>Experience</span></div>
-          <div class="stat-divider"></div>
-          <div class="stat-item"><span class="stat-num">3+</span><span class="stat-label">Projects<br>Built</span></div>
-          <div class="stat-divider"></div>
-          <div class="stat-item"><span class="stat-num">&#8734;</span><span class="stat-label">Passion to<br>Learn</span></div>
+        <h1 class="home-headline reveal">
+          <span class="hl-top">Hey, I'm</span>
+          <span class="hl-name">Naufal<br><em>Rakhadeto</em></span>
+        </h1>
+        <p class="home-sub reveal">Mahasiswa Sistem Informasi &middot; Builder &middot; Organizer</p>
+        <p class="home-greeting reveal" id="dynamic-greeting"></p>
+        <div class="home-cta reveal">
+          <button class="cta-primary" data-target="about">
+            <span>Explore About Me</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button class="cta-secondary" data-target="contact">
+            <span>Get In Touch</span>
+          </button>
         </div>
-        <div class="hc-skills-preview">
-          <span class="sp-tag">HTML</span><span class="sp-tag">CSS</span><span class="sp-tag">Java</span><span class="sp-tag">Python</span><span class="sp-tag active-tag">+ more</span>
+        <div class="home-chips reveal">
+          <span class="chip">&#128205; Tangerang Selatan</span>
+          <span class="chip">&#127891; UIN Syarif Hidayatullah</span>
+          <span class="chip">&#128187; Sistem Informasi</span>
         </div>
       </div>
-      <div class="float-quote"><span class="fq-mark">&ldquo;</span><p>Terus berkembang,<br>terus berkarya.</p></div>
-    </div>
-  </div>
-  <div class="scroll-hint reveal">
-    <span class="sh-text">Scroll down</span>
-    <div class="sh-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
-  </div>
-</section>
 
-<div class="section-divider"><span class="sd-line"></span><span class="sd-label">// about me</span><span class="sd-line"></span></div>
-
-<!-- ABOUT -->
-<section class="section" id="about">
-  <div class="page-inner">
-    <div class="section-header reveal">
-      <p class="sh-eyebrow">// about me</p>
-      <h2 class="sh-title">The Story<br><em>Behind the Code</em></h2>
-    </div>
-    <div class="about-grid">
-      <div class="about-card bio-card reveal">
-        <div class="ac-label">Bio</div>
-        <p class="bio-long">Mahasiswa program studi <strong>Sistem Informasi</strong> di UIN Syarif Hidayatullah Jakarta dengan ketertarikan kuat pada bidang <strong>organisasi, event management, leadership,</strong> dan koordinasi tim. Terbiasa bekerja dalam tekanan dengan kemampuan komunikasi yang baik, dan aktif berkontribusi dalam kegiatan kampus.</p>
-        <p class="bio-long" style="margin-top:12px">Berorientasi pada pengembangan diri dan terus mencari kesempatan untuk terlibat dalam program yang <em>berdampak</em>.</p>
-      </div>
-      <div class="about-card reveal">
-        <div class="ac-label">Pendidikan</div>
-        <div class="edu-item"><div class="edu-icon">&#127891;</div><div><span class="edu-name">UIN Syarif Hidayatullah Jakarta</span><span class="edu-prog">Sistem Informasi &middot; 2024 &ndash; Sekarang</span></div></div>
-        <div class="edu-item"><div class="edu-icon">&#127979;</div><div><span class="edu-name">SMAS Waskito</span><span class="edu-prog">Jurusan IPA &middot; 2021 &ndash; 2024</span></div></div>
-      </div>
-      <div class="about-card reveal">
-        <div class="ac-label">Skills</div>
-        <div class="skills-groups">
-          <div>
-            <span class="sg-label">Technical</span>
-            <div class="skill-bars">
-              <div class="skill-bar-item"><span class="sbi-name">HTML &amp; CSS</span><div class="sbi-track"><div class="sbi-fill" data-pct="82"></div></div><span class="sbi-pct">82%</span></div>
-              <div class="skill-bar-item"><span class="sbi-name">Java</span><div class="sbi-track"><div class="sbi-fill" data-pct="65"></div></div><span class="sbi-pct">65%</span></div>
-              <div class="skill-bar-item"><span class="sbi-name">Python</span><div class="sbi-track"><div class="sbi-fill" data-pct="60"></div></div><span class="sbi-pct">60%</span></div>
-              <div class="skill-bar-item"><span class="sbi-name">Microsoft Office</span><div class="sbi-track"><div class="sbi-fill" data-pct="88"></div></div><span class="sbi-pct">88%</span></div>
+      <div class="home-right reveal">
+        <div class="hero-card">
+          <div class="hc-top">
+            <div class="hc-photo-wrap">
+              <div class="hc-ring"></div>
+              <div class="hc-photo">
+                <img src="foto-naufal.jpeg" alt="Naufal Rakhadeto" onerror="this.style.display='none';this.parentElement.querySelector('.hc-fallback').style.display='flex'">
+                <div class="hc-fallback">NR</div>
+              </div>
+            </div>
+            <div class="hc-badge">
+              <span class="hc-badge-dot"></span>Open to Work
             </div>
           </div>
-          <div>
-            <span class="sg-label">Soft Skills</span>
-            <div class="soft-tags">
-              <span class="soft-tag">Public Speaking</span><span class="soft-tag">Leadership</span><span class="soft-tag">Event Management</span><span class="soft-tag">Problem Solving</span><span class="soft-tag">Team Coordination</span><span class="soft-tag">Fast Learner</span>
+          <div class="hc-stats">
+            <div class="stat-item">
+              <span class="stat-num">2+</span>
+              <span class="stat-label">Years Org<br>Experience</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">3+</span>
+              <span class="stat-label">Projects<br>Built</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num">&#8734;</span>
+              <span class="stat-label">Passion to<br>Learn</span>
+            </div>
+          </div>
+          <div class="hc-tags">
+            <span class="sp-tag">HTML</span>
+            <span class="sp-tag">CSS</span>
+            <span class="sp-tag">Java</span>
+            <span class="sp-tag">Python</span>
+            <span class="sp-tag accent-tag">+ more</span>
+          </div>
+        </div>
+        <div class="float-quote">
+          <span class="fq-mark">&ldquo;</span>
+          <p>Terus berkembang,<br>terus berkarya.</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="scroll-hint reveal">
+      <span class="sh-text">Scroll down</span>
+      <div class="sh-arrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="sec-divider"><span class="sd-line"></span><span class="sd-dot">&#10022;</span><span class="sd-line"></span></div>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="section" id="about">
+    <div class="page-wrap">
+      <div class="sec-header reveal">
+        <p class="sec-label">// about me</p>
+        <h2 class="sec-title">The Story<br><em>Behind the Code</em></h2>
+      </div>
+
+      <div class="about-grid">
+
+        <div class="acard span2 reveal">
+          <div class="acard-label">Bio</div>
+          <p class="bio-text">Mahasiswa program studi <strong>Sistem Informasi</strong> di UIN Syarif Hidayatullah Jakarta dengan ketertarikan kuat pada bidang <strong>organisasi, event management, leadership,</strong> dan koordinasi tim. Terbiasa bekerja dalam tekanan dengan kemampuan komunikasi yang baik, dan aktif berkontribusi dalam kegiatan kampus.</p>
+          <p class="bio-text" style="margin-top:12px">Berorientasi pada pengembangan diri dan terus mencari kesempatan untuk terlibat dalam program yang <em>berdampak</em>.</p>
+        </div>
+
+        <div class="acard reveal">
+          <div class="acard-label">Pendidikan</div>
+          <div class="edu-row">
+            <span class="edu-ico">&#127891;</span>
+            <div>
+              <span class="edu-name">UIN Syarif Hidayatullah Jakarta</span>
+              <span class="edu-sub">Sistem Informasi &middot; 2024 &ndash; Sekarang</span>
+            </div>
+          </div>
+          <div class="edu-row">
+            <span class="edu-ico">&#127979;</span>
+            <div>
+              <span class="edu-name">SMAS Waskito</span>
+              <span class="edu-sub">Jurusan IPA &middot; 2021 &ndash; 2024</span>
             </div>
           </div>
         </div>
-      </div>
-      <div class="about-card exp-card reveal">
-        <div class="ac-label">Pengalaman</div>
-        <div class="timeline">
-          <div class="tl-item">
-            <div class="tl-dot"></div>
-            <div><span class="tl-date">2025</span><span class="tl-role">Kakak Pembimbing (Kabim)</span><span class="tl-org">PBAK FST UIN Syarif Hidayatullah Jakarta</span><p class="tl-desc">Membimbing mahasiswa baru, memastikan ketertiban agenda, menjadi penghubung antara peserta dan panitia inti.</p></div>
+
+        <div class="acard reveal">
+          <div class="acard-label">Skills</div>
+          <span class="skill-group-label">Technical</span>
+          <div class="skill-bars">
+            <div class="skill-row"><span class="skill-name">HTML &amp; CSS</span><div class="skill-track"><div class="skill-fill" data-pct="82"></div></div><span class="skill-pct">82%</span></div>
+            <div class="skill-row"><span class="skill-name">Java</span><div class="skill-track"><div class="skill-fill" data-pct="65"></div></div><span class="skill-pct">65%</span></div>
+            <div class="skill-row"><span class="skill-name">Python</span><div class="skill-track"><div class="skill-fill" data-pct="60"></div></div><span class="skill-pct">60%</span></div>
+            <div class="skill-row"><span class="skill-name">MS Office</span><div class="skill-track"><div class="skill-fill" data-pct="88"></div></div><span class="skill-pct">88%</span></div>
           </div>
-          <div class="tl-item">
-            <div class="tl-dot"></div>
-            <div><span class="tl-date">2022 &ndash; 2023</span><span class="tl-role">Wakil Ketua OSIS</span><span class="tl-org">OSIS SMA</span><p class="tl-desc">Mengkoordinasikan kegiatan sekolah, memimpin tim internal, mengelola rapat dan pembagian tugas secara kolaboratif.</p></div>
-          </div>
-        </div>
-      </div>
-      <div class="about-card reveal">
-        <div class="ac-label">Projects</div>
-        <div class="projects-list">
-          <div class="proj-item">
-            <div class="proj-icon">&#128247;</div>
-            <div class="proj-info"><span class="proj-name">Pixel Booth</span><span class="proj-tech">HTML &middot; CSS &middot; JavaScript</span><p class="proj-desc">Aplikasi photo booth berbasis web dengan fitur filter, frame, dan download foto langsung dari browser.</p></div>
-            <a href="https://github.com/rakhadeto" target="_blank" class="proj-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
-          </div>
-          <div class="proj-item">
-            <div class="proj-icon">&#128202;</div>
-            <div class="proj-info"><span class="proj-name">Student Habits &amp; Performance</span><span class="proj-tech">Python &middot; Data Analysis</span><p class="proj-desc">Analisis korelasi kebiasaan belajar mahasiswa terhadap performa akademik menggunakan dataset dan visualisasi data.</p></div>
-            <a href="https://github.com/rakhadeto" target="_blank" class="proj-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
-          </div>
-          <div class="proj-item">
-            <div class="proj-icon">&#9989;</div>
-            <div class="proj-info"><span class="proj-name">My To-Do App</span><span class="proj-tech">HTML &middot; CSS &middot; JavaScript</span><p class="proj-desc">Aplikasi manajemen tugas harian berbasis web dengan fitur tambah, edit, hapus, dan pengelolaan prioritas aktivitas.</p></div>
-            <a href="https://github.com/rakhadeto" target="_blank" class="proj-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+          <span class="skill-group-label" style="margin-top:16px">Soft Skills</span>
+          <div class="soft-tags">
+            <span class="soft-tag">Public Speaking</span>
+            <span class="soft-tag">Leadership</span>
+            <span class="soft-tag">Event Management</span>
+            <span class="soft-tag">Problem Solving</span>
+            <span class="soft-tag">Team Coordination</span>
+            <span class="soft-tag">Fast Learner</span>
           </div>
         </div>
-      </div>
-      <div class="about-card reveal">
-        <div class="ac-label">Fun Facts</div>
-        <div class="fun-list">
-          <div class="fun-item"><span class="fun-emoji">&#128293;</span><span>Suka ngoding sambil dengerin lo-fi</span></div>
-          <div class="fun-item"><span class="fun-emoji">&#128218;</span><span>Aktif di kegiatan kampus &amp; organisasi</span></div>
-          <div class="fun-item"><span class="fun-emoji">&#128640;</span><span>Selalu excited belajar teknologi baru</span></div>
-          <div class="fun-item"><span class="fun-emoji">&#129309;</span><span>People-person yang suka kolaborasi</span></div>
+
+        <div class="acard span2 reveal">
+          <div class="acard-label">Pengalaman</div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-body">
+                <span class="tl-date">2025</span>
+                <span class="tl-role">Kakak Pembimbing (Kabim)</span>
+                <span class="tl-org">PBAK FST &mdash; UIN Syarif Hidayatullah Jakarta</span>
+                <p class="tl-desc">Membimbing mahasiswa baru, memastikan ketertiban agenda, menjadi penghubung antara peserta dan panitia inti.</p>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-body">
+                <span class="tl-date">2022 &ndash; 2023</span>
+                <span class="tl-role">Wakil Ketua OSIS</span>
+                <span class="tl-org">OSIS SMA</span>
+                <p class="tl-desc">Mengkoordinasikan kegiatan sekolah, memimpin tim internal, mengelola rapat dan pembagian tugas secara kolaboratif.</p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div class="acard reveal">
+          <div class="acard-label">Projects</div>
+          <div class="proj-list">
+            <div class="proj-row">
+              <span class="proj-ico">&#128247;</span>
+              <div class="proj-body">
+                <span class="proj-name">Pixel Booth</span>
+                <span class="proj-tech">HTML &middot; CSS &middot; JavaScript</span>
+                <p class="proj-desc">Aplikasi photo booth berbasis web dengan fitur filter, frame, dan download foto dari browser.</p>
+              </div>
+              <a href="https://github.com/rakhadeto" target="_blank" class="proj-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+            <div class="proj-row">
+              <span class="proj-ico">&#128202;</span>
+              <div class="proj-body">
+                <span class="proj-name">Student Habits &amp; Performance</span>
+                <span class="proj-tech">Python &middot; Data Analysis</span>
+                <p class="proj-desc">Analisis korelasi kebiasaan belajar mahasiswa terhadap performa akademik dengan visualisasi data.</p>
+              </div>
+              <a href="https://github.com/rakhadeto" target="_blank" class="proj-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+            <div class="proj-row">
+              <span class="proj-ico">&#9989;</span>
+              <div class="proj-body">
+                <span class="proj-name">My To-Do App</span>
+                <span class="proj-tech">HTML &middot; CSS &middot; JavaScript</span>
+                <p class="proj-desc">Aplikasi manajemen tugas harian dengan fitur tambah, edit, hapus, dan pengelolaan prioritas.</p>
+              </div>
+              <a href="https://github.com/rakhadeto" target="_blank" class="proj-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="acard reveal">
+          <div class="acard-label">Fun Facts</div>
+          <div class="fun-list">
+            <div class="fun-row"><span>&#128293;</span><span>Suka ngoding sambil dengerin lo-fi</span></div>
+            <div class="fun-row"><span>&#128218;</span><span>Aktif di kegiatan kampus &amp; organisasi</span></div>
+            <div class="fun-row"><span>&#128640;</span><span>Selalu excited belajar teknologi baru</span></div>
+            <div class="fun-row"><span>&#129309;</span><span>People-person yang suka kolaborasi</span></div>
+          </div>
+        </div>
+
       </div>
     </div>
+  </section>
+
+  <div class="sec-divider"><span class="sd-line"></span><span class="sd-dot">&#10022;</span><span class="sd-line"></span></div>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="section" id="contact">
+    <div class="page-wrap contact-wrap">
+      <div class="sec-header reveal">
+        <p class="sec-label">// contact</p>
+        <h2 class="sec-title">Let's<br><em>Connect</em></h2>
+      </div>
+      <p class="contact-intro reveal">Feel free to reach out &mdash; whether it's collaboration, project ideas, or just saying hi!</p>
+
+      <div class="links-grid">
+        <a href="https://wa.me/6281291359191" target="_blank" rel="noopener" class="link-card reveal" data-platform="whatsapp">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div class="link-info">
+            <span class="link-name">WhatsApp</span>
+            <span class="link-sub">+62 812 9135 9191</span>
+          </div>
+          <div class="link-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+
+        <a href="mailto:rakhadeto@gmail.com" rel="noopener" class="link-card reveal" data-platform="email">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="link-info">
+            <span class="link-name">Email</span>
+            <span class="link-sub">rakhadeto@gmail.com</span>
+          </div>
+          <div class="link-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+
+        <a href="https://github.com/rakhadeto" target="_blank" rel="noopener" class="link-card reveal" data-platform="github">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </div>
+          <div class="link-info">
+            <span class="link-name">GitHub</span>
+            <span class="link-sub">@rakhadeto</span>
+          </div>
+          <div class="link-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+
+        <a href="https://instagram.com/rakhadeto_d" target="_blank" rel="noopener" class="link-card reveal" data-platform="instagram">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </div>
+          <div class="link-info">
+            <span class="link-name">Instagram</span>
+            <span class="link-sub">@rakhadeto_d</span>
+          </div>
+          <div class="link-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+      </div>
+
+      <div class="contact-note reveal">
+        <span class="cn-line"></span>
+        <span class="cn-text">Response within 24 hours &#128588;</span>
+        <span class="cn-line"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM NAV mobile -->
+  <div class="bottom-nav">
+    <button class="bn-btn active" data-target="home">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="bn-btn" data-target="about">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span>About</span>
+    </button>
+    <button class="bn-btn" data-target="contact">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+      <span>Contact</span>
+    </button>
   </div>
-</section>
 
-<div class="section-divider"><span class="sd-line"></span><span class="sd-label">// contact</span><span class="sd-line"></span></div>
+  <footer class="site-footer">
+    <p>&#169; <span id="year"></span> Naufal Rakhadeto &middot; Crafted with &#x1F90D;</p>
+  </footer>
 
-<!-- CONTACT -->
-<section class="section" id="contact">
-  <div class="page-inner contact-inner">
-    <div class="section-header reveal">
-      <p class="sh-eyebrow">// contact</p>
-      <h2 class="sh-title">Let's<br><em>Connect</em></h2>
-    </div>
-    <p class="contact-intro reveal">Feel free to reach out &mdash; whether it's collaboration, project ideas, or just saying hi!</p>
-    <div class="links-grid">
-      <a href="https://wa.me/6281291359191" target="_blank" rel="noopener" class="link-card reveal" data-platform="whatsapp">
-        <div class="link-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
-        <div class="link-info"><span class="link-name">WhatsApp</span><span class="link-handle">+62 812 9135 9191</span></div>
-        <div class="link-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </a>
-      <a href="/cdn-cgi/l/email-protection#b7c5d6dcdfd6d3d2c3d8f7d0dad6dedb99d4d8da" rel="noopener" class="link-card reveal" data-platform="email">
-        <div class="link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-        <div class="link-info"><span class="link-name">Email</span><span class="link-handle"><span class="__cf_email__" data-cfemail="7406151f1c151011001b341319151d185a171b19">[email&#160;protected]</span></span></div>
-        <div class="link-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </a>
-      <a href="https://github.com/rakhadeto" target="_blank" rel="noopener" class="link-card reveal" data-platform="github">
-        <div class="link-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></div>
-        <div class="link-info"><span class="link-name">GitHub</span><span class="link-handle">@rakhadeto</span></div>
-        <div class="link-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </a>
-      <a href="https://instagram.com/rakhadeto_d" target="_blank" rel="noopener" class="link-card reveal" data-platform="instagram">
-        <div class="link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
-        <div class="link-info"><span class="link-name">Instagram</span><span class="link-handle">@rakhadeto_d</span></div>
-        <div class="link-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </a>
-    </div>
-    <div class="contact-footer-note reveal">
-      <span class="cfn-line"></span><span class="cfn-text">Response within 24 hours &#128588;</span><span class="cfn-line"></span>
-    </div>
-  </div>
-</section>
-
-<div class="bottom-nav">
-  <button class="bn-btn active" data-target="home">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    <span>Home</span>
-  </button>
-  <button class="bn-btn" data-target="about">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-    <span>About</span>
-  </button>
-  <button class="bn-btn" data-target="contact">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
-    <span>Contact</span>
-  </button>
-</div>
-
-<footer class="site-footer">
-  <p>&#169; <span id="year"></span> Naufal Rakhadeto &middot; Crafted with &#x1F90D;</p>
-</footer>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-document.getElementById('year').textContent = new Date().getFullYear();
-
-var hour = new Date().getHours();
-var gr;
-if(hour>=5&&hour<12) gr="Good morning! Selamat datang di halaman profil saya — semoga harimu produktif! ☀️";
-else if(hour>=12&&hour<17) gr="Halo! Glad you stopped by — feel free to explore and connect. 👋";
-else if(hour>=17&&hour<21) gr="Good evening! Terima kasih sudah mampir — let's build something cool together. 🌆";
-else gr="Haloo, masih melek juga ya? Thanks for visiting! Let's connect. 🌙";
-document.getElementById('dynamic-greeting').textContent = gr;
-
-function scrollTo(id){
-  var el=document.getElementById(id);
-  if(!el)return;
-  var navH=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'))||64;
-  window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-navH,behavior:'smooth'});
-}
-document.querySelectorAll('[data-target]').forEach(function(b){
-  b.addEventListener('click',function(){scrollTo(this.getAttribute('data-target'));});
-});
-
-var sections=document.querySelectorAll('.section');
-var tabBtns=document.querySelectorAll('.tab-btn');
-var bnBtns=document.querySelectorAll('.bn-btn');
-function setActive(id){
-  tabBtns.forEach(function(b){b.classList.toggle('active',b.getAttribute('data-target')===id);});
-  bnBtns.forEach(function(b){b.classList.toggle('active',b.getAttribute('data-target')===id);});
-}
-var ioNav=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){if(e.isIntersecting)setActive(e.target.id);});
-},{rootMargin:'-30% 0px -60% 0px',threshold:0});
-sections.forEach(function(s){ioNav.observe(s);});
-
-var ioReveal=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){
-    if(e.isIntersecting){
-      e.target.classList.add('visible');
-      e.target.querySelectorAll('.sbi-fill').forEach(function(bar){
-        setTimeout(function(){bar.style.width=bar.getAttribute('data-pct')+'%';},300);
-      });
-      ioReveal.unobserve(e.target);
-    }
-  });
-},{threshold:0.12});
-document.querySelectorAll('.reveal').forEach(function(el){ioReveal.observe(el);});
-
-document.querySelectorAll('.link-card').forEach(function(card){
-  card.addEventListener('click',function(e){
-    var r=document.createElement('span');
-    var rect=card.getBoundingClientRect();
-    r.style.cssText='position:absolute;left:'+(e.clientX-rect.left)+'px;top:'+(e.clientY-rect.top)+'px;background:rgba(255,255,255,0.06);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;animation:ripple 0.6s ease-out forwards';
-    card.appendChild(r);
-    setTimeout(function(){r.remove();},650);
-  });
-});
-
-if(window.matchMedia('(min-width:820px)').matches){
-  document.addEventListener('mousemove',function(e){
-    var cx=window.innerWidth/2,cy=window.innerHeight/2;
-    var dx=(e.clientX-cx)/cx,dy=(e.clientY-cy)/cy;
-    document.querySelectorAll('.blob').forEach(function(b,i){
-      var d=(i+1)*12;
-      b.style.transform='translate('+(dx*d)+'px,'+(dy*d)+'px)';
-    });
-  });
-  var hc=document.querySelector('.hero-card');
-  if(hc){
-    hc.addEventListener('mousemove',function(e){
-      var rect=hc.getBoundingClientRect();
-      var x=((e.clientX-rect.left)/rect.width-0.5)*12;
-      var y=((e.clientY-rect.top)/rect.height-0.5)*12;
-      hc.style.transform='perspective(600px) rotateX('+(-y)+'deg) rotateY('+x+'deg) scale(1.02)';
-      hc.style.transition='transform 0.1s ease';
-    });
-    hc.addEventListener('mouseleave',function(){hc.style.transform='';hc.style.transition='transform 0.5s ease';});
-  }
-}
-
-var ns=document.getElementById('nav-status');
-var 
+  <script src="script.js"></script>
+</body>
+</html>

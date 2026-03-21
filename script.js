@@ -1,141 +1,115 @@
-/* ============================================
-   NAUFAL RAKHADETO — script.js  (scroll version)
-   ============================================ */
+/* =============================================
+   NAUFAL RAKHADETO — script.js
+   ============================================= */
 
-// ── Year ──
+// Year
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// ── Greeting ──
-var hour = new Date().getHours();
-var greeting;
-if      (hour >= 5  && hour < 12) greeting = "Good morning! Selamat datang di halaman profil saya — semoga harimu produktif! ☀️";
-else if (hour >= 12 && hour < 17) greeting = "Halo! Glad you stopped by — feel free to explore and connect. 👋";
-else if (hour >= 17 && hour < 21) greeting = "Good evening! Terima kasih sudah mampir — let's build something cool together. 🌆";
-else                               greeting = "Haloo, masih melek juga ya? Thanks for visiting! Let's connect. 🌙";
-document.getElementById('dynamic-greeting').textContent = greeting;
+// Greeting
+var h = new Date().getHours();
+var g;
+if      (h >= 5  && h < 12) g = "Good morning! Selamat datang — semoga harimu produktif! \u2600\uFE0F";
+else if (h >= 12 && h < 17) g = "Halo! Glad you stopped by — feel free to explore and connect. \uD83D\uDC4B";
+else if (h >= 17 && h < 21) g = "Good evening! Terima kasih sudah mampir \u2014 let's build something cool. \uD83C\uDF06";
+else                         g = "Haloo, masih melek juga ya? Thanks for visiting! \uD83C\uDF19";
+document.getElementById('dynamic-greeting').textContent = g;
 
-// ── SMOOTH SCROLL to section ──
-// used by nav buttons, CTA buttons, and bottom nav
-function scrollToSection(id) {
-  var target = document.getElementById(id);
-  if (!target) return;
-  var navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 64;
-  var top = target.getBoundingClientRect().top + window.pageYOffset - navH;
+// ── SMOOTH SCROLL ──
+function goTo(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var nh = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 64;
+  var top = el.getBoundingClientRect().top + window.pageYOffset - nh;
   window.scrollTo({ top: top, behavior: 'smooth' });
 }
 
-// Nav top buttons
-document.querySelectorAll('.tab-btn[data-target]').forEach(function(btn) {
-  btn.addEventListener('click', function() { scrollToSection(this.getAttribute('data-target')); });
-});
-
-// CTA buttons (data-target on home section)
+// All buttons with data-target
 document.querySelectorAll('[data-target]').forEach(function(btn) {
-  if (btn.tagName === 'BUTTON') {
-    btn.addEventListener('click', function() { scrollToSection(this.getAttribute('data-target')); });
-  }
-});
-
-// Bottom nav buttons
-document.querySelectorAll('.bn-btn[data-target]').forEach(function(btn) {
-  btn.addEventListener('click', function() { scrollToSection(this.getAttribute('data-target')); });
-});
-
-// ── ACTIVE NAV HIGHLIGHT on scroll (IntersectionObserver) ──
-var sections   = document.querySelectorAll('.section');
-var navBtns    = document.querySelectorAll('.tab-btn');
-var bottomBtns = document.querySelectorAll('.bn-btn');
-var navH       = 64; // fallback
-
-function setActiveNav(id) {
-  navBtns.forEach(function(b) {
-    b.classList.toggle('active', b.getAttribute('data-target') === id);
+  btn.addEventListener('click', function() {
+    goTo(this.getAttribute('data-target'));
   });
-  bottomBtns.forEach(function(b) {
+});
+
+// ── ACTIVE NAV on scroll ──
+var sections = document.querySelectorAll('.section');
+var allNavBtns = document.querySelectorAll('[data-target]');
+
+function setActive(id) {
+  allNavBtns.forEach(function(b) {
     b.classList.toggle('active', b.getAttribute('data-target') === id);
   });
 }
 
-// Use IntersectionObserver — fires when section crosses 30% of viewport
-var ioNav = new IntersectionObserver(function(entries) {
-  entries.forEach(function(entry) {
-    if (entry.isIntersecting) setActiveNav(entry.target.id);
+var io = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) setActive(e.target.id);
   });
 }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
 
-sections.forEach(function(s) { ioNav.observe(s); });
+sections.forEach(function(s) { io.observe(s); });
 
-// ── SCROLL-REVEAL (IntersectionObserver) ──
+// ── SCROLL REVEAL ──
 var ioReveal = new IntersectionObserver(function(entries) {
-  entries.forEach(function(entry) {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      // once visible, trigger skill bars if inside about section
-      var fill = entry.target.querySelectorAll('.sbi-fill');
-      if (fill.length) {
-        setTimeout(function() {
-          fill.forEach(function(bar) { bar.style.width = bar.getAttribute('data-pct') + '%'; });
-        }, 300);
-      }
-      ioReveal.unobserve(entry.target); // only animate once
-    }
+  entries.forEach(function(e) {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('visible');
+    // animate skill bars when visible
+    e.target.querySelectorAll('.skill-fill').forEach(function(bar) {
+      setTimeout(function() {
+        bar.style.width = bar.getAttribute('data-pct') + '%';
+      }, 300);
+    });
+    ioReveal.unobserve(e.target);
   });
-}, { threshold: 0.12 });
+}, { threshold: 0.1 });
 
-document.querySelectorAll('.reveal').forEach(function(el) { ioReveal.observe(el); });
+document.querySelectorAll('.reveal').forEach(function(el) {
+  ioReveal.observe(el);
+});
 
 // ── RIPPLE on link cards ──
 document.querySelectorAll('.link-card').forEach(function(card) {
   card.addEventListener('click', function(e) {
     var r = document.createElement('span');
     var rect = card.getBoundingClientRect();
-    r.style.cssText = [
-      'position:absolute',
-      'left:' + (e.clientX - rect.left) + 'px',
-      'top:'  + (e.clientY - rect.top)  + 'px',
-      'background:rgba(255,255,255,0.06)',
-      'border-radius:50%',
-      'transform:translate(-50%,-50%)',
-      'pointer-events:none',
-      'animation:ripple 0.6s ease-out forwards'
-    ].join(';');
+    r.style.cssText = 'position:absolute;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;background:rgba(255,255,255,0.06);animation:ripple .6s ease-out forwards;left:' + (e.clientX - rect.left) + 'px;top:' + (e.clientY - rect.top) + 'px';
     card.appendChild(r);
     setTimeout(function() { r.remove(); }, 650);
   });
 });
 
-// ── PARALLAX BLOBS (desktop) ──
+// ── PARALLAX BLOBS desktop ──
 if (window.matchMedia('(min-width:820px)').matches) {
   document.addEventListener('mousemove', function(e) {
     var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
     var dx = (e.clientX - cx) / cx, dy = (e.clientY - cy) / cy;
     document.querySelectorAll('.blob').forEach(function(b, i) {
       var d = (i + 1) * 12;
-      b.style.transform = 'translate(' + (dx*d) + 'px,' + (dy*d) + 'px)';
+      b.style.transform = 'translate(' + dx * d + 'px,' + dy * d + 'px)';
     });
   });
 
-  // Hero card tilt
+  // hero card tilt
   var hc = document.querySelector('.hero-card');
   if (hc) {
     hc.addEventListener('mousemove', function(e) {
-      var rect = hc.getBoundingClientRect();
-      var x = ((e.clientX - rect.left) / rect.width  - 0.5) * 12;
-      var y = ((e.clientY - rect.top)  / rect.height - 0.5) * 12;
+      var r = hc.getBoundingClientRect();
+      var x = ((e.clientX - r.left) / r.width - .5) * 12;
+      var y = ((e.clientY - r.top) / r.height - .5) * 12;
       hc.style.transform = 'perspective(600px) rotateX(' + (-y) + 'deg) rotateY(' + x + 'deg) scale(1.02)';
-      hc.style.transition = 'transform 0.1s ease';
+      hc.style.transition = 'transform .1s ease';
     });
     hc.addEventListener('mouseleave', function() {
       hc.style.transform = '';
-      hc.style.transition = 'transform 0.5s ease';
+      hc.style.transition = 'transform .5s ease';
     });
   }
 }
 
 // ── NAV STATUS CYCLE ──
-var ns  = document.getElementById('nav-status');
+var ns = document.getElementById('nav-status');
 var sts = ['Available', 'Open to Work', "Let's Connect"];
-var si  = 0;
+var si = 0;
 setInterval(function() {
   si = (si + 1) % sts.length;
   ns.style.opacity = '0';
