@@ -82,10 +82,10 @@ button{border:none;background:none;cursor:pointer;color:inherit;font:inherit}
 .hero-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-lg);padding:28px;position:relative;overflow:hidden}
 .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
 .hc-avatar{display:flex;align-items:center;gap:16px;padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:24px;position:relative}
-.hc-ring{position:absolute;width:68px;height:68px;border-radius:50%;border:1.5px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(135deg,var(--accent),transparent,var(--accent-2)) border-box;animation:rotateSlow 8s linear infinite;top:0;left:0}
+.hc-ring{position:absolute;width:88px;height:88px;border-radius:50%;border:1.5px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(135deg,var(--accent),transparent,var(--accent-2)) border-box;animation:rotateSlow 8s linear infinite;top:-4px;left:-4px}
 @keyframes rotateSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.hc-img{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--surface2),var(--bg2));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:22px;font-weight:700;color:var(--accent);border:1px solid var(--border);flex-shrink:0;overflow:hidden}
-.hc-img img{width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%}
+.hc-img{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--surface2),var(--bg2));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:22px;font-weight:700;color:var(--accent);border:2px solid var(--border2);flex-shrink:0;overflow:hidden;box-shadow:0 0 20px rgba(167,139,250,0.2)}
+.hc-img img{width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:50%}
 .hc-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;color:var(--accent-3);background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);padding:5px 10px;border-radius:20px;letter-spacing:.05em}
 .hc-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent-3);animation:pdot 2s infinite}
 .hc-stats{display:flex;align-items:center;gap:16px;margin-bottom:20px}
@@ -370,9 +370,9 @@ button{border:none;background:none;cursor:pointer;color:inherit;font:inherit}
         <div class="link-info"><span class="link-name">WhatsApp</span><span class="link-handle">+62 812 9135 9191</span></div>
         <div class="link-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </a>
-      <a href="mailto:rakhadeto@gmail.com" rel="noopener" class="link-card reveal" data-platform="email">
+      <a href="/cdn-cgi/l/email-protection#b7c5d6dcdfd6d3d2c3d8f7d0dad6dedb99d4d8da" rel="noopener" class="link-card reveal" data-platform="email">
         <div class="link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-        <div class="link-info"><span class="link-name">Email</span><span class="link-handle">rakhadeto@gmail.com</span></div>
+        <div class="link-info"><span class="link-name">Email</span><span class="link-handle"><span class="__cf_email__" data-cfemail="7406151f1c151011001b341319151d185a171b19">[email&#160;protected]</span></span></div>
         <div class="link-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </a>
       <a href="https://github.com/rakhadeto" target="_blank" rel="noopener" class="link-card reveal" data-platform="github">
@@ -411,7 +411,7 @@ button{border:none;background:none;cursor:pointer;color:inherit;font:inherit}
   <p>&#169; <span id="year"></span> Naufal Rakhadeto &middot; Crafted with &#x1F90D;</p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
 var hour = new Date().getHours();
@@ -490,13 +490,4 @@ if(window.matchMedia('(min-width:820px)').matches){
 }
 
 var ns=document.getElementById('nav-status');
-var sts=['Available','Open to Work',"Let's Connect"];
-var si=0;
-setInterval(function(){
-  si=(si+1)%sts.length;
-  ns.style.opacity='0';
-  setTimeout(function(){ns.textContent=sts[si];ns.style.opacity='1';},400);
-},3500);
-</script>
-</body>
-</html>
+var 
