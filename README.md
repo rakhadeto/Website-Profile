@@ -68,8 +68,8 @@ Website-Profile/
 - 📱 WhatsApp: [+62 812 9135 9191](https://wa.me/6281291359191)
 - 📧 Email: [rakhadeto@gmail.com](mailto:rakhadeto@gmail.com)
 - 🐱 GitHub: [@rakhadeto](https://github.com/rakhadeto)
-- 📸 Instagram: [@rakhadeto](https://instagram.com/rakhadeto)
+- 📸 Instagram: [@rakhadeto](https://instagram.com/rakhadeto_d)
 
 ---
 
-Made with 🤍 by **Naufal Rakhadeto** · [UIN Syarif Hidayatullah Jakarta](https://uinjkt.ac.id)
+Made by **Naufal Rakhadeto** · [UIN Syarif Hidayatullah Jakarta](https://uinjkt.ac.id)
