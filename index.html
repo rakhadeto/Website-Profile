@@ -1,518 +1,412 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Profile</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        /* --- GLOBAL RESET & BODY --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Lato', sans-serif; /* Font default untuk body */
-            background: linear-gradient(135deg, #121212 0%, #212121 100%); /* Hitam pekat ke abu-abu gelap */
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-            color: #f0f0f0; /* Teks default putih pucat */
-        }
-
-        /* --- BACKGROUND ANIMATION (PARTIKEL) --- */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.08); /* Partikel sangat redup */
-            border-radius: 50%;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        /* --- NEW: NEBULAR GLOW EFFECT --- */
-        .nebula-glow-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0; /* Di belakang semua konten dan partikel */
-            filter: blur(80px); /* Sangat buram untuk efek glow */
-            opacity: 0.6;
-        }
-
-        .glow-sphere {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            animation: glowMove 25s linear infinite alternate;
-        }
-
-        .glow-1 {
-            background: radial-gradient(circle, #ff007f 0%, transparent 70%); /* Pink neon */
-            top: 10%;
-            left: -50px;
-            animation-delay: 0s;
-        }
-
-        .glow-2 {
-            background: radial-gradient(circle, #00ffff 0%, transparent 70%); /* Cyan neon */
-            bottom: 20%;
-            right: -100px;
-            animation-delay: 8s;
-            width: 350px;
-            height: 350px;
-        }
-
-        .glow-3 {
-            background: radial-gradient(circle, #ffea00 0%, transparent 70%); /* Kuning neon */
-            top: 60%;
-            left: 20%;
-            animation-delay: 15s;
-            width: 300px;
-            height: 300px;
-        }
-
-        @keyframes glowMove {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(50px, -30px); }
-            50% { transform: translate(-50px, 40px); }
-            75% { transform: translate(30px, -20px); }
-            100% { transform: translate(0, 0); }
-        }
-
-        /* --- CONTAINER --- */
-        .container {
-            position: relative;
-            z-index: 2;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* --- PROFILE CARD (KARTU INFORMASI ANDA) --- */
-        .profile-card {
-            background: rgba(255, 255, 255, 0.08); /* Lebih terang sedikit dari sebelumnya agar teks lebih mudah dibaca */
-            backdrop-filter: blur(40px); /* Blur lebih kuat untuk kesan menyatu dengan latar belakang */
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Bingkai tipis dan berwarna putih semi-transparan untuk kontras halus */
-            border-radius: 15px; /* Sudut sedikit lebih tajam, memberikan kesan modern yang kuat */
-            padding: 3.5rem; /* Padding sedikit lebih besar untuk ruang teks */
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); /* Bayangan tetap gelap namun sedikit lebih naik */
-            transition: all 0.4s ease-in-out; /* Transisi lebih halus */
-            animation: slideUp 1s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .profile-card:hover {
-            transform: translateY(-12px); /* Efek hover lebih terasa */
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); /* Bayangan hover lebih dramatis */
-        }
-
-        /* --- PROFILE IMAGE (FOTO PROFIL) --- */
-        .profile-image {
-            width: 160px; /* Sedikit lebih kecil agar tidak terlalu mendominasi di tema gelap */
-            height: 160px;
-            border-radius: 50%;
-            margin: 0 auto 2.5rem; /* Margin bawah sedikit lebih besar */
-            overflow: hidden;
-            animation: pulse 2s infinite;
-            border: 2px solid #222; /* Border gelap tipis pada gambar */
-            box-shadow: 0 0 0 5px rgba(0, 255, 255, 0.15); /* Efek glow tipis di sekitar gambar */
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.2); } /* Pulse lebih lembut */
-            70% { box-shadow: 0 0 0 15px rgba(0, 255, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
-        }
-
-        /* --- PROFILE TEXT COLORS & FONTS --- */
-        .profile-name {
-            font-family: 'Montserrat', sans-serif; /* Font lebih kuat, modern, dan profesional */
-            font-size: 2.8rem; /* Ukuran lebih besar untuk penekanan di tema gelap */
-            font-weight: 700; /* Tebal untuk kontras yang jelas */
-            color: #e0ffff; /* Warna aqua pucat, memberikan efek "neon glow" yang elegan */
-            margin-bottom: 0.6rem;
-            text-shadow: 0 0 8px rgba(0, 255, 255, 0.4); /* Bayangan teks yang memberikan efek cahaya halus */
-        }
-
-        .profile-title {
-            font-family: 'Open Sans', sans-serif; /* Font yang bersih, mudah dibaca, dan universal */
-            font-size: 1.4rem; /* Ukuran sedikit lebih besar */
-            color: #a7d9de; /* Warna abu-abu kebiruan yang lembut */
-            margin-bottom: 2.8rem;
-            font-weight: 400; /* Lebih ringan dari nama, untuk hierarki */
-        }
-
-        .profile-description {
-            font-family: 'Open Sans', sans-serif; /* Sama dengan title, konsisten untuk readability */
-            font-size: 1.15rem; /* Ukuran sedikit lebih besar untuk keterbacaan di latar gelap */
-            color: #c7e9ed; /* Warna abu-abu kebiruan yang sangat terang */
-            line-height: 1.8; /* Jarak baris yang lebih lebar sangat penting untuk teks gelap agar tidak terlihat padat */
-            margin-bottom: 3.8rem;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        /* --- SOCIAL BUTTON --- */
-        .social-container {
-            position: relative;
-        }
-
-        .social-trigger {
-            background: linear-gradient(45deg, #4dd0e1, #00bcd4); /* Cyan ke teal */
-            color: #222; /* Teks tombol jadi gelap agar kontras */
-            border: 1px solid #26a69a; /* Border teal tipis */
-            padding: 1rem 2.2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4); /* Bayangan tombol lebih fokus */
-            position: relative;
-            overflow: hidden;
-        }
-
-        .social-trigger::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); /* Efek kilau putih */
-            transition: left 0.4s;
-        }
-
-        .social-trigger:hover::before {
-            left: 100%;
-        }
-
-        .social-trigger:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 188, 212, 0.6); /* Efek hover lebih kuat */
-        }
-
-        /* --- SOCIAL LINKS --- */
-        .social-links {
-            position: absolute;
-            top: -200px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 1.5rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .social-links.active {
-            top: -120px;
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .social-link {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-            animation: bounceIn 0.5s ease-out;
-            animation-fill-mode: both;
-        }
-
-        .social-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            transform: scale(0);
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-            z-index: -1;
-        }
-
-        .social-link:hover::before {
-            transform: scale(1.2);
-        }
-
-        .social-link:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .social-link:nth-child(1) { animation-delay: 0.1s; }
-        .social-link:nth-child(2) { animation-delay: 0.2s; }
-        .social-link:nth-child(3) { animation-delay: 0.3s; }
-        .social-link:nth-child(4) { animation-delay: 0.4s; }
-
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale(0.3) translateY(50px); }
-            50% { opacity: 1; transform: scale(1.05) translateY(-10px); }
-            70% { transform: scale(0.9) translateY(0px); }
-            100% { opacity: 1; transform: scale(1) translateY(0px); }
-        }
-
-        /* Warna ikon sosial disesuaikan untuk tema gelap */
-        .github { background: linear-gradient(45deg, #000, #333); }
-        .instagram { background: linear-gradient(45deg, #a80084, #ff007f); } /* Lebih ke ungu/pink neon */
-        .whatsapp { background: linear-gradient(45deg, #10b981, #0c8a66); } /* Hijau lebih gelap */
-        .linkedin { background: linear-gradient(45deg, #004d7f, #0077b5); } /* Biru lebih gelap */
-
-        /* --- TOOLTIP --- */
-        .tooltip {
-            position: absolute;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.2); /* Abu-abu transparan untuk gelap */
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .social-link:hover .tooltip {
-            opacity: 1;
-            visibility: visible;
-            bottom: -35px;
-        }
-
-        /* --- RESPONSIVE MEDIA QUERIES --- */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            .profile-card {
-                padding: 2rem;
-                border-radius: 20px;
-            }
-            .profile-name {
-                font-size: 2rem;
-            }
-            .profile-image {
-                width: 150px;
-                height: 150px;
-            }
-            .social-links {
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-            .glow-sphere {
-                width: 200px !important;
-                height: 200px !important;
-                filter: blur(40px);
-            }
-            .glow-1 { top: 5%; left: -20px; }
-            .glow-2 { bottom: 10%; right: -30px; }
-            .glow-3 { top: 40%; left: 60%; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Naufal Rakhadeto</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="bg-animation" id="bgAnimation"></div>
-    <div class="nebula-glow-container">
-        <div class="glow-sphere glow-1"></div>
-        <div class="glow-sphere glow-2"></div>
-        <div class="glow-sphere glow-3"></div>
+
+  <!-- Noise overlay -->
+  <div class="noise"></div>
+
+  <!-- Ambient background -->
+  <div class="ambient">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Grid lines decorative -->
+  <div class="grid-lines">
+    <div class="vline vl-1"></div>
+    <div class="vline vl-2"></div>
+  </div>
+
+  <!-- ====== NAV ====== -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <span class="logo-bracket">[</span>NR<span class="logo-bracket">]</span>
+      </div>
+      <div class="nav-tabs">
+        <button class="tab-btn active" data-tab="home">Home</button>
+        <button class="tab-btn" data-tab="about">About</button>
+        <button class="tab-btn" data-tab="contact">Contact</button>
+      </div>
+      <div class="nav-indicator">
+        <span class="ind-dot"></span>
+        <span class="ind-text" id="nav-status">Available</span>
+      </div>
     </div>
-    
-    <div class="container">
-        <div class="profile-card">
-            <div class="profile-image">
-                <img src="Naufal.jpeg">
-            </div>
-            
-            <h1 class="profile-name">Naufal Rakhadeto Darmawan</h1>
-            <p class="profile-title">Junior Data Analyst</p>
-            
-            <p class="profile-description">
-                Undergraduate Information System student at UIN Syarif Hidayatullah Jakarta 
-                Let's connect and build something amazing together!
-            </p>
-            
-            <div class="social-container">
-                <button class="social-trigger" id="socialTrigger">
-                    <i class="fas fa-share-alt"></i> Connect With Me
-                </button>
-                
-                <div class="social-links" id="socialLinks">
-                    <a href="https://github.com/rakhadeto" class="social-link github" target="_blank">
-                        <i class="fab fa-github"></i>
-                        <div class="tooltip">GitHub</div>
-                    </a>
-                    <a href="https://instagram.com/rakhadeto_d" class="social-link instagram" target="_blank">
-                        <i class="fab fa-instagram"></i>
-                        <div class="tooltip">Instagram</div>
-                    </a>
-                    <a href="https://wa.me/6281291359191" class="social-link whatsapp" target="_blank">
-                        <i class="fab fa-whatsapp"></i>
-                        <div class="tooltip">WhatsApp</div>
-                    </a>
-                    <a href="https://www.linkedin.com/in/naufal-rakhadeto-780470322?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="social-link linkedin" target="_blank">
-                        <i class="fab fa-linkedin-in"></i>
-                        <div class="tooltip">LinkedIn</div>
-                    </a>
-                </div>
-            </div>
+  </nav>
+
+  <!-- ====== MAIN WRAPPER ====== -->
+  <main class="main-wrap">
+
+    <!-- ========== HOME TAB ========== -->
+    <section class="tab-page active" id="tab-home">
+      <div class="home-layout">
+
+        <!-- Left column -->
+        <div class="home-left">
+          <div class="home-eyebrow">
+            <span class="eyebrow-line"></span>
+            <span class="eyebrow-text">Welcome to my space</span>
+          </div>
+
+          <h1 class="home-headline">
+            <span class="hl-top">Hey, I'm</span>
+            <span class="hl-name">Naufal<br><em>Rakhadeto</em></span>
+          </h1>
+
+          <p class="home-sub">
+            Mahasiswa Sistem Informasi · Builder · Organizer
+          </p>
+
+          <p class="home-greeting" id="dynamic-greeting">
+            <!-- filled by JS -->
+          </p>
+
+          <div class="home-cta">
+            <button class="cta-primary" data-goto="about">
+              <span>Explore About Me</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <button class="cta-secondary" data-goto="contact">
+              <span>Get In Touch</span>
+            </button>
+          </div>
+
+          <div class="home-chips">
+            <span class="chip">📍 Tangerang Selatan</span>
+            <span class="chip">🎓 UIN Syarif Hidayatullah</span>
+            <span class="chip">💻 Sistem Informasi</span>
+          </div>
         </div>
-    </div>
 
-    <script>
-        // Background animation (existing from previous code)
-        function createParticles() {
-            const bgAnimation = document.getElementById('bgAnimation');
-            const particleCount = 15;
+        <!-- Right column – card -->
+        <div class="home-right">
+          <div class="hero-card">
+            <div class="hc-avatar">
+              <div class="hc-ring"></div>
+              <div class="hc-img">NR</div>
+              <div class="hc-badge">
+                <span class="hc-badge-dot"></span>
+                Open to Work
+              </div>
+            </div>
+            <div class="hc-stats">
+              <div class="stat-item">
+                <span class="stat-num">2+</span>
+                <span class="stat-label">Years Org<br>Experience</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <span class="stat-num">3+</span>
+                <span class="stat-label">Projects<br>Built</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <span class="stat-num">∞</span>
+                <span class="stat-label">Passion to<br>Learn</span>
+              </div>
+            </div>
+            <div class="hc-skills-preview">
+              <span class="sp-tag">HTML</span>
+              <span class="sp-tag">CSS</span>
+              <span class="sp-tag">Java</span>
+              <span class="sp-tag">Python</span>
+              <span class="sp-tag active-tag">+ more</span>
+            </div>
+          </div>
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const size = Math.random() * 4 + 2;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 8 + 's';
-                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+          <!-- Floating decorative quote -->
+          <div class="float-quote">
+            <span class="fq-mark">"</span>
+            <p>Terus berkembang,<br>terus berkarya.</p>
+          </div>
+        </div>
 
-                bgAnimation.appendChild(particle);
-            }
-        }
+      </div>
 
-        // Social links toggle (existing from previous code)
-        const socialTrigger = document.getElementById('socialTrigger');
-        const socialLinks = document.getElementById('socialLinks');
-        let isOpen = false;
+      <!-- Scroll hint -->
+      <div class="scroll-hint">
+        <span class="sh-text">Scroll down</span>
+        <div class="sh-line"></div>
+      </div>
+    </section>
 
-        socialTrigger.addEventListener('click', function() {
-            isOpen = !isOpen;
-            
-            if (isOpen) {
-                socialLinks.classList.add('active');
-                socialTrigger.innerHTML = '<i class="fas fa-times"></i> Close';
-                // WARNA TOMBOL 'CLOSE' UNTUK OPSI 2
-                socialTrigger.style.background = 'linear-gradient(45deg, #FF0055, #D1002A)'; 
-            } else {
-                socialLinks.classList.remove('active');
-                socialTrigger.innerHTML = '<i class="fas fa-share-alt"></i> Connect With Me';
-                socialTrigger.style.background = 'linear-gradient(45deg, #4dd0e1, #00bcd4)';
-            }
-        });
+    <!-- ========== ABOUT TAB ========== -->
+    <section class="tab-page" id="tab-about">
 
-        // Close social links when clicking outside (existing from previous code)
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.social-container') && isOpen) {
-                socialLinks.classList.remove('active');
-                socialTrigger.innerHTML = '<i class="fas fa-share-alt"></i> Connect With Me';
-                socialTrigger.style.background = 'linear-gradient(45deg, #4dd0e1, #00bcd4)';
-                isOpen = false;
-            }
-        });
+      <div class="about-layout">
 
-        // Add click effect to social links (existing from previous code)
-        document.querySelectorAll('.social-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const ripple = document.createElement('div');
-                ripple.style.position = 'absolute';
-                ripple.style.borderRadius = '50%';
-                ripple.style.background = 'rgba(255, 255, 255, 0.6)';
-                ripple.style.transform = 'scale(0)';
-                ripple.style.animation = 'ripple 0.6s linear';
-                ripple.style.left = '50%';
-                ripple.style.top = '50%';
-                ripple.style.width = '20px';
-                ripple.style.height = '20px';
-                ripple.style.marginLeft = '-10px';
-                ripple.style.marginTop = '-10px';
+        <!-- Section header -->
+        <div class="section-header">
+          <p class="sh-eyebrow">// about me</p>
+          <h2 class="sh-title">The Story<br><em>Behind the Code</em></h2>
+        </div>
 
-                this.appendChild(ripple);
-                
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
-            });
-        });
+        <!-- About content grid -->
+        <div class="about-grid">
 
-        // Add ripple animation (existing from previous code)
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
+          <!-- Bio card -->
+          <div class="about-card bio-card">
+            <div class="ac-label">Bio</div>
+            <p class="bio-long">
+              Mahasiswa program studi <strong>Sistem Informasi</strong> di UIN Syarif Hidayatullah Jakarta 
+              dengan ketertarikan kuat pada bidang <strong>organisasi, event management, leadership,</strong> 
+              dan koordinasi tim. Terbiasa bekerja dalam tekanan dengan kemampuan komunikasi yang baik, 
+              dan aktif berkontribusi dalam kegiatan kampus.
+            </p>
+            <p class="bio-long" style="margin-top:12px">
+              Berorientasi pada pengembangan diri dan terus mencari kesempatan untuk terlibat dalam 
+              program yang <em>berdampak</em>.
+            </p>
+          </div>
 
-        // Initialize particles (existing from previous code)
-        createParticles();
+          <!-- Education card -->
+          <div class="about-card edu-card">
+            <div class="ac-label">Pendidikan</div>
+            <div class="edu-item">
+              <div class="edu-icon">🎓</div>
+              <div class="edu-detail">
+                <span class="edu-name">UIN Syarif Hidayatullah Jakarta</span>
+                <span class="edu-prog">Sistem Informasi · 2024 – Sekarang</span>
+              </div>
+            </div>
+            <div class="edu-item">
+              <div class="edu-icon">🏫</div>
+              <div class="edu-detail">
+                <span class="edu-name">SMAS Waskito</span>
+                <span class="edu-prog">Jurusan IPA · 2021 – 2024</span>
+              </div>
+            </div>
+          </div>
 
-        // Add typing effect to description (existing from previous code)
-        const description = document.querySelector('.profile-description');
-        const text = description.textContent;
-        description.textContent = '';
-        let i = 0;
+          <!-- Skills card -->
+          <div class="about-card skills-card">
+            <div class="ac-label">Skills</div>
+            <div class="skills-groups">
+              <div class="skill-group">
+                <span class="sg-label">Technical</span>
+                <div class="skill-bars">
+                  <div class="skill-bar-item">
+                    <span class="sbi-name">HTML & CSS</span>
+                    <div class="sbi-track"><div class="sbi-fill" data-pct="82"></div></div>
+                    <span class="sbi-pct">82%</span>
+                  </div>
+                  <div class="skill-bar-item">
+                    <span class="sbi-name">Java</span>
+                    <div class="sbi-track"><div class="sbi-fill" data-pct="65"></div></div>
+                    <span class="sbi-pct">65%</span>
+                  </div>
+                  <div class="skill-bar-item">
+                    <span class="sbi-name">Python</span>
+                    <div class="sbi-track"><div class="sbi-fill" data-pct="60"></div></div>
+                    <span class="sbi-pct">60%</span>
+                  </div>
+                  <div class="skill-bar-item">
+                    <span class="sbi-name">Microsoft Office</span>
+                    <div class="sbi-track"><div class="sbi-fill" data-pct="88"></div></div>
+                    <span class="sbi-pct">88%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="skill-group">
+                <span class="sg-label">Soft Skills</span>
+                <div class="soft-tags">
+                  <span class="soft-tag">Public Speaking</span>
+                  <span class="soft-tag">Leadership</span>
+                  <span class="soft-tag">Event Management</span>
+                  <span class="soft-tag">Problem Solving</span>
+                  <span class="soft-tag">Team Coordination</span>
+                  <span class="soft-tag">Fast Learner</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        function typeWriter() {
-            if (i < text.length) {
-                description.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 30);
-            }
-        }
+          <!-- Experience card -->
+          <div class="about-card exp-card">
+            <div class="ac-label">Pengalaman</div>
+            <div class="timeline">
+              <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-content">
+                  <span class="tl-date">2025</span>
+                  <span class="tl-role">Kakak Pembimbing (Kabim)</span>
+                  <span class="tl-org">PBAK FST UIN Syarif Hidayatullah Jakarta</span>
+                  <p class="tl-desc">Membimbing mahasiswa baru, memastikan ketertiban agenda, menjadi penghubung antara peserta dan panitia inti.</p>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-content">
+                  <span class="tl-date">2022 – 2023</span>
+                  <span class="tl-role">Wakil Ketua OSIS</span>
+                  <span class="tl-org">OSIS SMA</span>
+                  <p class="tl-desc">Mengkoordinasikan kegiatan sekolah, memimpin tim internal, mengelola rapat dan pembagian tugas secara kolaboratif.</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        window.addEventListener('load', () => {
-            setTimeout(typeWriter, 1000);
-        });
-    </script>
-</body>
-</html>
+          <!-- Projects card -->
+          <div class="about-card proj-card">
+            <div class="ac-label">Projects</div>
+            <div class="projects-list">
+              <div class="proj-item">
+                <div class="proj-icon">📸</div>
+                <div class="proj-info">
+                  <span class="proj-name">Pixel Booth</span>
+                  <span class="proj-tech">HTML · CSS · JavaScript</span>
+                  <p class="proj-desc">Aplikasi photo booth berbasis web dengan fitur filter, frame, dan download foto langsung dari browser.</p>
+                </div>
+                <a href="https://github.com/rakhadeto" target="_blank" class="proj-link">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              </div>
+              <div class="proj-item">
+                <div class="proj-icon">📊</div>
+                <div class="proj-info">
+                  <span class="proj-name">Student Habits & Performance</span>
+                  <span class="proj-tech">Python · Data Analysis</span>
+                  <p class="proj-desc">Analisis korelasi kebiasaan belajar mahasiswa terhadap performa akademik menggunakan dataset dan visualisasi data.</p>
+                </div>
+                <a href="https://github.com/rakhadeto" target="_blank" class="proj-link">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              </div>
+              <div class="proj-item">
+                <div class="proj-icon">✅</div>
+                <div class="proj-info">
+                  <span class="proj-name">My To-Do App</span>
+                  <span class="proj-tech">HTML · CSS · JavaScript</span>
+                  <p class="proj-desc">Aplikasi manajemen tugas harian berbasis web dengan fitur tambah, edit, hapus, dan pengelolaan prioritas aktivitas.</p>
+                </div>
+                <a href="https://github.com/rakhadeto" target="_blank" class="proj-link">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fun fact card -->
+          <div class="about-card fun-card">
+            <div class="ac-label">Fun Facts</div>
+            <div class="fun-list">
+              <div class="fun-item"><span class="fun-emoji">🔥</span><span>Suka ngoding sambil dengerin lo-fi</span></div>
+              <div class="fun-item"><span class="fun-emoji">📚</span><span>Aktif di kegiatan kampus & organisasi</span></div>
+              <div class="fun-item"><span class="fun-emoji">🚀</span><span>Selalu excited belajar teknologi baru</span></div>
+              <div class="fun-item"><span class="fun-emoji">🤝</span><span>People-person yang suka kolaborasi</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONTACT TAB ========== -->
+    <section class="tab-page" id="tab-contact">
+      <div class="contact-layout">
+
+        <div class="section-header">
+          <p class="sh-eyebrow">// contact</p>
+          <h2 class="sh-title">Let's<br><em>Connect</em></h2>
+        </div>
+
+        <p class="contact-intro">
+          Feel free to reach out — whether it's collaboration, project ideas, or just saying hi!
+        </p>
+
+        <div class="links-grid">
+
+          <a href="https://wa.me/6281291359191" target="_blank" rel="noopener" class="link-card" data-platform="whatsapp">
+            <div class="link-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </div>
+            <div class="link-info">
+              <span class="link-name">WhatsApp</span>
+              <span class="link-handle">+62 812 9135 9191</span>
+            </div>
+            <div class="link-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+
+          <a href="/cdn-cgi/l/email-protection#1062717b78717475647f50777d71797c3e737f7d" target="_blank" rel="noopener" class="link-card" data-platform="email">
+            <div class="link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="link-info">
+              <span class="link-name">Email</span>
+              <span class="link-handle"><span class="__cf_email__" data-cfemail="b4c6d5dfdcd5d0d1c0dbf4d3d9d5ddd89ad7dbd9">[email&#160;protected]</span></span>
+            </div>
+            <div class="link-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+
+          <a href="https://github.com/rakhadeto" target="_blank" rel="noopener" class="link-card" data-platform="github">
+            <div class="link-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </div>
+            <div class="link-info">
+              <span class="link-name">GitHub</span>
+              <span class="link-handle">@rakhadeto</span>
+            </div>
+            <div class="link-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+
+          <a href="https://instagram.com/rakhadeto_d" target="_blank" rel="noopener" class="link-card" data-platform="instagram">
+            <div class="link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </div>
+            <div class="link-info">
+              <span class="link-name">Instagram</span>
+              <span class="link-handle">@rakhadeto_d</span>
+            </div>
+            <div class="link-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        </div>
+
+        <div class="contact-footer-note">
+          <span class="cfn-line"></span>
+          <span class="cfn-text">Response within 24 hours 🙌</span>
+          <span class="cfn-line"></span>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====== BOTTOM NAV (mobile) ====== -->
+  <div class="bottom-nav">
+    <button class="bn-btn active" data-tab="home">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="bn-btn" data-tab="about">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span>About</span>
+    </button>
+    <button class="bn-btn" data-tab="contact">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+      <span>Contact</span>
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p
